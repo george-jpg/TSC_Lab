@@ -1,0 +1,16 @@
+ RESET SIGNAL, 
+
+generate transaction, un repeat de 3 ori
+chemam randomize.transaction 
+tr.print
+punwm valorile din tranzactie in interfata 
+vifc.clockigblock <=2
+driver.new
+driver.resetsignls
+driver.generatetransaction
+
+
+clasa Monitor (3)
+2 functii
+a.read register -imiplica codul din for
+b.print results
