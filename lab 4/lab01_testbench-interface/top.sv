@@ -20,14 +20,14 @@ module top;
   // connect interface to design using discrete ports
   instr_register dut (
     .clk(clk),
-    .load_en(tbifc.load_en),
-    .reset_n(tbifc.reset_n),
-    .operand_a(tbifc.operand_a),
-    .operand_b(tbifc.operand_b),
-    .opcode(tbifc.opcode),
-    .write_pointer(tbifc.write_pointer),
-    .read_pointer(tbifc.read_pointer),
-    .instruction_word(tbifc.instruction_word)
+    .load_en(tbifc.cb.load_en),
+    .reset_n(tbifc.cb.reset_n),
+    .operand_a(tbifc.cb.operand_a),
+    .operand_b(tbifc.cb.operand_b),
+    .opcode(tbifc.cb.opcode),
+    .write_pointer(tbifc.cb.write_pointer),
+    .read_pointer(tbifc.cb.read_pointer),
+    .instruction_word(tbifc.cb.instruction_word)
    );
 
   // clock oscillators
