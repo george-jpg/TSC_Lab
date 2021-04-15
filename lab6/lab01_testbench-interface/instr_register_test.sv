@@ -29,9 +29,10 @@ module instr_register_test (tb_ifc itfc);  // interface port
 	constraint const_operand_b{
 
        
-    operand_a >= 0;
-	operand_a <=15;
+    operand_b >= 0;
+	operand_b <=15;
 	};
+	
 	
 
 
@@ -56,10 +57,69 @@ module instr_register_test (tb_ifc itfc);  // interface port
   class Driver;
   virtual tb_ifc vifc;
   Transaction tr;
-
+  
+  covergroup inputs_measure;
+  
+   cov_0: coverpoint vifc.cb.opcode {
+   bins val_Zero = {ZERO};
+   bins val_passA= {PASSA};
+   bins val_passB= {PASSB};
+   bins val_add= {ADD};
+   bins val_sub= {SUB};
+   bins val_mult= {MULT};
+   bins val_div= {DIV};
+   bins val_mod= {MOD};
+   }
+   cov_1: coverpoint vifc.cb.operand_a{
+   
+   bins val_op_a [] = {[-15:15]};
+   }
+   
+   cov_2: coverpoint vifc.cb.operand_b{
+   
+   bins val_op_b [] = {[0:15]};
+   
+   }
+   
+   cov_3: coverpoint vifc.cb.operand_a{
+   
+   bins val_op_a_neg [] = {[-15:-1]};
+   bins val_op_a_poz [] = {[0:15]};
+   
+   }
+     
+   cov_4: cross cov_0, cov_3{
+   
+   ignore_bins poz_ignore = binsof (cov_3.val_op_a_poz);
+   
+   }
+   
+   cov_5_1: coverpoint vifc.cb.operand_a{
+   
+   bins val_op_a [] = {-15, 15};
+   
+   }
+   
+   cov_5_2: coverpoint vifc.cb.operand_b{
+   
+   bins val_op_a [] = {0, 15};
+   
+   }
+   
+    cov_5: cross cov_0, cov_5_1, cov_5_2{
+   
+   
+   
+   }
+   
+   
+   
+   endgroup
+   
     function new(virtual tb_ifc vifc);
       this.vifc = vifc;
       tr = new();
+	  inputs_measure = new();
     endfunction 
 
 task reset_signals();
@@ -91,6 +151,7 @@ task reset_signals();
 		assign_signals();
         
         @(vifc.cb) tr.print_transaction();
+		inputs_measure.sample;
       end
       @vifc.cb vifc.cb.load_en <= 1'b0;  	  // turn-off writing to register
 	  
