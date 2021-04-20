@@ -96,23 +96,45 @@ module instr_register_test (tb_ifc itfc);  // interface port
    
    cov_5_1: coverpoint vifc.cb.operand_a{
    
-   bins val_op_a [] = {-15, 15};
+   bins val_op_a_15 [] ={15};
+   bins val_op_a_min15 [] ={-15};
    
    }
    
    cov_5_2: coverpoint vifc.cb.operand_b{
    
-   bins val_op_a [] = {0, 15};
+   bins val_op_b_0 [] = {0};
+   bins val_op_b_15 [] = {15};
    
    }
    
     cov_5: cross cov_0, cov_5_1, cov_5_2{
    
+   }
    
+   cov_6: cross cov_0,cov_5_1, cov_5_2{
+   
+    ignore_bins max_a_ignore = binsof(cov_5_1.val_op_a_15);
+	ignore_bins max_b_ignore = binsof(cov_5_2.val_op_b_15);
+	}
+   
+   
+   
+   cov_7: cross cov_0, cov_3{
+   
+   ignore_bins poz_ignore = binsof (cov_3.val_op_a_neg);
    
    }
    
+   cov_8_1: coverpoint vifc.cb.operand_a{
+			bins val_op_a_0 ={0};
+			}
    
+   
+   cov_8: cross cov_8_1, cov_5_2{
+   
+		ignore_bins not_zero_ignore =binsof (cov_5_2.val_op_b_15);
+		}
    
    endgroup
    
